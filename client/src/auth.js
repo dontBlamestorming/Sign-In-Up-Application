@@ -2,8 +2,6 @@ import axios from "axios";
 
 // sign in 요청
 export const signIn = (email, password, getStatus) => {
-  console.log(email, password);
-
   axios
     .post("/signIn/user", {
       userId: email,
