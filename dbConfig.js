@@ -5,7 +5,6 @@ const mysql = require("mysql");
 const fs = require("fs");
 const data = fs.readFileSync("./dbConfigInfo.json");
 const conf = JSON.parse(data);
-console.log(conf); // check what database use
 
 const db = mysql.createConnection({
   host: conf.host,
