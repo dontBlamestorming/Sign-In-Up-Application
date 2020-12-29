@@ -177,10 +177,10 @@ const server = http
       res.end(err.messages);
     }
   })
-  .listen(5000);
+  .listen(3000);
 
 server.on("listening", () => {
-  console.log("5000번 포트에서 서버 대기 중입니다.");
+  console.log("3000번 포트에서 서버 대기 중입니다.");
 });
 
 server.on("error", (err) => {
