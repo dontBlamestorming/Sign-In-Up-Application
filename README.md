@@ -47,26 +47,27 @@
 
 ***
 
-### 전체 로직 맵
+### Architecture
 <p align="center">
-  <img src="client/public/images/map.png" width="1000">
+  <img width="858" alt="architecture" src="https://user-images.githubusercontent.com/41932978/103398829-abcaef80-4b81-11eb-8466-b88b2cee3ccc.png">
 </p>
         
 ***
 
-### 웹 스크린샷
-<p align="center">
-  <img src="client/public/images/map.png" width="1000">
-</p>
+### Application 스크린 샷
 
-    1. 향후 추가할 기능 
+| Sign-In  | Sign-Up |
+| ------------- | ------------- |
+| ![Sign-In](https://user-images.githubusercontent.com/41932978/103398773-7de5ab00-4b81-11eb-9224-caff22edbe5d.gif)  | ![Sign-Up](https://user-images.githubusercontent.com/41932978/103398790-8a6a0380-4b81-11eb-86f9-c83411bcf9fc.gif)  |
+| Worng Path  | 404 page  |
+| <img alt="wrong-path" src="https://user-images.githubusercontent.com/41932978/103398868-d1f08f80-4b81-11eb-8e02-6f7710713891.png">  | <img alt="404-page" src="https://user-images.githubusercontent.com/41932978/103398870-d452e980-4b81-11eb-901a-ec8ff5ff36f3.png">  |
 
 ***
 
-## 보완점 개발 예정 로드맵
-    1. https
-    2. jwt
-    3. refactoring(node를 중점으로)
+## 보완점 개발 예정
+- [ ] 사용자는 80번 포트로만 접근할 수 있으며 이는 단순히 텍스트를 통해 데이터를 주고받고 하기 때문에 보안상 취약하다. https를 적용해보자.
+- [ ] 인증과 관련된 보안문제를 강화하기 위해 jwt와 같은 token을 추가해보자
+- [ ] NodeJS와 관련하여 request의 데이터를 받는 코드와, DB에 쿼리를 날리는 코드가 하드코딩되어 있으니 리팩토링 시켜보자
 
 ***
 
@@ -74,7 +75,7 @@
 
 
 ### 어려웠던 부분
-
+- Web-server라는 존재를 몰랐었기에 nginx의 location과 server설정 하는 부분에서 시간을 많이 보냈던 것 같다. 
 ***
 
 ### 느낀점
