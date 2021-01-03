@@ -95,7 +95,7 @@ function LoginForm({ authed, getStatus }) {
               {/* 필수입력사항 입력여부의 Alert */}
               {allNeededInfo === false ? (
                 <Alert className="alertSignIn" variant="danger" size="sm">
-                  The required fields were not completed
+                  The required fields were not completed.
                 </Alert>
               ) : null}
             </Form>
