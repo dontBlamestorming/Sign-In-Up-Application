@@ -28,8 +28,6 @@
     │
     ├── client                    - client-side
     │   ├── package.json          - npm 설정
-    │   ├── models.py             - 서버 모델 정의
-    │   │── views.py              - 서버 뷰 함수(API 엔드포인트) 정의
     │   │ 
     │   ├── src/                  - 클라이언트 사이드 폴더
     │   │   ├── App.js            - main component
