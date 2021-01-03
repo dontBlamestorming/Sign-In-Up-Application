@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Route, Redirect } from "react-router-dom";
+import React from "react";
+import { Redirect } from "react-router-dom";
 import FirstPage from "./FirstPage";
 
 function AuthedRoute({ authed }) {
