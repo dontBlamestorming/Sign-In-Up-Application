@@ -16,7 +16,12 @@ function FirstPage() {
           <Card.Text>You have successfully logged in.</Card.Text>
 
           <Button variant="success" block size="md">
-            Please visit my Github page!
+            <a
+              href="https://github.com/dontBlamestorming/Sign-In-Up-Application"
+              style={{ color: "#FFF" }}
+            >
+              Please visit my Github page!
+            </a>
           </Button>
         </Card.Body>
       </Card>
