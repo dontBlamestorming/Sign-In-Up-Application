@@ -1,131 +1,67 @@
-// init database
+// getting Web server object
 const http = require("http");
-const db = require("./dbConfig");
-db.connect();
+
+// Business logic
+const { getStatusByUrl } = require("./model/signIn");
+
+// middlewares
+const { bodyParser } = require("./middlewares/bodyParser");
+const handleResponse = require("./middlewares/handleResponse");
 
 const server = http
   .createServer(async (req, res) => {
     try {
-      // ============= Sign in =============== //
       if (req.method === "POST") {
         if (req.url === "/signIn/user") {
-          let body = "";
+          // ============= Sign in =============== //
+          let body = bodyParser(req);
+          let info = await body;
+          const isInfoValid = await getStatusByUrl(info, req.url);
 
-          req.on("data", (data) => {
-            // data -> by stream
-            body += data;
-          });
+          switch (isInfoValid) {
+            // Success to Sign-in
+            case true:
+              handleResponse.status200(res, isInfoValid);
+              break;
 
-          req.on("end", () => {
-            const info = JSON.parse(body);
-            // ---------- parsed body assign to info ---------- //
-
-            let sql =
-              "SELECT mem_email FROM Authentication WHERE mem_email IN ((?))";
-            const id = info.userId;
-            const password = info.password;
-
-            // 아이디 조회
-            db.query(sql, id, (err, result) => {
-              if (err) {
-                res.write({
-                  success: false,
-                  message: "database error",
-                  error: err,
-                });
-                res.end();
-                throw err;
-              }
-
-              // 아이디가 없는 경우
-              if (!result.length) {
-                res.writeHead(200, {
-                  "Content-Type": "application/json; charset=utf-8",
-                });
-                res.write(JSON.stringify({ status: false }));
-                return res.end();
-              }
-
-              // 아이디가 있는 경우
-              if (id === result[0].mem_email) {
-                sql =
-                  "SELECT mem_password FROM Authentication WHERE mem_password IN ((?))";
-
-                // 비밀번호 조회
-                db.query(sql, password, (err, result) => {
-                  if (err) {
-                    res.write({
-                      success: false,
-                      message: "database error",
-                      error: err,
-                    });
-                    res.end();
-                    throw err;
-                  }
-
-                  //비밀번호가 없는 경우
-                  if (!result.length) {
-                    res.writeHead(200, {
-                      "Content-Type": "application/json; charset=utf-8",
-                    });
-                    res.write(JSON.stringify({ status: false }));
-                    return res.end();
-                  }
-
-                  // 아이디와 비밀번호 모두 일치하는 경우
-                  if (password === result[0].mem_password) {
-                    res.writeHead(200, {
-                      "Content-Type": "application/json; charset=utf-8",
-                    });
-                    res.write(JSON.stringify({ status: true }));
-                    return res.end();
-                  }
-                });
-              }
-            });
-          });
+            // fail to Sign-in
+            case false:
+              handleResponse.status200(res, isInfoValid);
+              break;
+          }
         } else if (req.url === "/isDuplicate/id") {
           // ============= 아이디 중복 검사 =============== //
-          let body = "";
+          let body = bodyParser(req);
+          let info = await body;
+          const isInfoValid = await getStatusByUrl(info);
+          console.log(isInfoValid);
 
-          req.on("data", (data) => {
-            body += data;
-          });
+          // db.query(sql, id, (err, result, fields) => {
+          //   if (err) {
+          //     res.write({
+          //       success: false,
+          //       message: "database error",
+          //       error: err,
+          //     });
+          //     res.end();
+          //     throw err;
+          //   }
 
-          req.on("end", () => {
-            const info = JSON.parse(body);
-            // ---------- parsed body assign to info ---------- //
-            let sql =
-              "SELECT mem_email FROM Authentication where mem_email = (?)";
-            const id = info.userId;
-
-            db.query(sql, id, (err, result, fields) => {
-              if (err) {
-                res.write({
-                  success: false,
-                  message: "database error",
-                  error: err,
-                });
-                res.end();
-                throw err;
-              }
-
-              // 중복된 아이디가 존재하는 경우
-              if (result.length) {
-                res.writeHead(200, {
-                  "Content-Type": "application/json; charset=utf-8",
-                });
-                res.write(JSON.stringify({ status: false }));
-                return res.end();
-              } else {
-                res.writeHead(200, {
-                  "Content-Type": "application/json; charset=utf-8",
-                });
-                res.write(JSON.stringify({ status: true }));
-                return res.end();
-              }
-            });
-          });
+          //   // 중복된 아이디가 존재하는 경우
+          //   if (result.length) {
+          //     res.writeHead(200, {
+          //       "Content-Type": "application/json; charset=utf-8",
+          //     });
+          //     res.write(JSON.stringify({ status: false }));
+          //     return res.end();
+          //   } else {
+          //     res.writeHead(200, {
+          //       "Content-Type": "application/json; charset=utf-8",
+          //     });
+          //     res.write(JSON.stringify({ status: true }));
+          //     return res.end();
+          //   }
+          // });
         } else if (req.url === "/post/user/signUp") {
           // ============= Sign Up =============== //
           let body = "";
@@ -173,14 +109,13 @@ const server = http
       }
     } catch (err) {
       console.error(err);
-      res.writeHead(500, { "Content-Type": "text/plain; charset=utf-8" });
-      res.end(err.messages);
+      handleResponse.status200(err);
     }
   })
-  .listen(3000);
+  .listen(5000);
 
 server.on("listening", () => {
-  console.log("3000번 포트에서 서버 대기 중입니다.");
+  console.log("5000번 포트에서 서버 대기 중입니다.");
 });
 
 server.on("error", (err) => {
